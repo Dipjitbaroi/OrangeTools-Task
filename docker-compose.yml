@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - client
+      - server
+    restart: always
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+  db:
+    image: postgres:16-alpine # Use a specific version
+    environment:
+      - POSTGRES_USER=your_user
+      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_DB=your_database
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=Vxk#92R!d7E^nM4yPlW9g!8f*Ko@1HnB
+      - DATABASE_URL=postgresql://your_user:your_password@db:5432/your_database
+    depends_on:
+      - db
+    volumes:
+      - ./server:/app
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+    volumes:
+      - ./client:/app
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:3000
+
+volumes:
+  pgdata: # Named volume for PostgreSQL data persistence
