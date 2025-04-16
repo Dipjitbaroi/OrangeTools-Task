@@ -1,8 +1,7 @@
-# Dockerfile for the server (server/Dockerfile)
 FROM node:22-alpine
 
 WORKDIR /app
-COPY package*.json yarn.lock ./
+COPY package*.json ./
 RUN npm install 
 COPY . .
 

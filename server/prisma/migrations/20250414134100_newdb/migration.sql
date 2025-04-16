@@ -16,6 +16,7 @@ CREATE TABLE "Customer" (
     "email" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "company" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
     "tags" TEXT[],
     "userId" INTEGER NOT NULL,
 

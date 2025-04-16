@@ -20,8 +20,6 @@ services:
       - NODE_ENV=development
       - JWT_SECRET=Vxk#92R!d7E^nM4yPlW9g!8f*Ko@1HnB
       - DATABASE_URL=postgresql://orangetool_task_user:sGX26XKf624WHZpA7wSUDujInnNwEq0R@dpg-cvugps9r0fns73833fug-a.oregon-postgres.render.com/orangetool_task
-    depends_on:
-      - db
     volumes:
       - ./server:/app
   client:
@@ -37,6 +35,3 @@ services:
     environment:
       - NODE_ENV=development
       - VITE_API_URL=http://localhost:3000
-
-volumes:
-  pgdata: # Named volume for PostgreSQL data persistence
