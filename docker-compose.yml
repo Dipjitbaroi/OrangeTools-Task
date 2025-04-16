@@ -1,4 +1,8 @@
 version: '3.8'
+
+networks:
+  app_network:
+
 services:
   nginx:
     image: nginx:latest
@@ -8,8 +12,12 @@ services:
       - client
       - server
     restart: always
+    networks:
+      - app_network
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    command: ["sh", "/wait-for.sh"]
+
   server:
     build:
       context: ./server
@@ -20,8 +28,11 @@ services:
       - NODE_ENV=development
       - JWT_SECRET=Vxk#92R!d7E^nM4yPlW9g!8f*Ko@1HnB
       - DATABASE_URL=postgresql://orangetool_task_user:sGX26XKf624WHZpA7wSUDujInnNwEq0R@dpg-cvugps9r0fns73833fug-a.oregon-postgres.render.com/orangetool_task
+    networks:
+      - app_network
     volumes:
       - ./server:/app
+
   client:
     build:
       context: ./client
@@ -30,8 +41,10 @@ services:
       - "5173:5173"
     depends_on:
       - server
+    networks:
+      - app_network
     volumes:
       - ./client:/app
     environment:
       - NODE_ENV=development
-      - VITE_API_URL=http://localhost:3000
+      - VITE_API_URL=http://server:3000
