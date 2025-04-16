@@ -24,6 +24,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
   const tags = filterTags.join(",");
+
   const {
     data: customersData,
     isLoading: isCustomersLoading,
@@ -34,9 +35,9 @@ const Home = () => {
     search: searchQuery,
     tags,
   });
-  const { data: tagsData, error: tagsError } = useGetUniqueTagsQuery();
 
-  const isLoading = isCustomersLoading; // Simplify loading check
+  const { data: tagsData, error: tagsError } = useGetUniqueTagsQuery();
+  const isLoading = isCustomersLoading;
 
   if (isLoading) {
     return (
@@ -142,6 +143,9 @@ const Home = () => {
                     Company
                   </TableCell>
                   <TableCell className="font-semibold text-gray-700">
+                    Location
+                  </TableCell>
+                  <TableCell className="font-semibold text-gray-700">
                     Tags
                   </TableCell>
                 </TableRow>
@@ -150,7 +154,7 @@ const Home = () => {
                 {filteredCustomers.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      colSpan={4}
+                      colSpan={5}
                       className="text-center text-gray-500 font-medium"
                     >
                       No customers found.
@@ -166,17 +170,19 @@ const Home = () => {
                       <TableCell>{customer.name}</TableCell>
                       <TableCell>{customer.email}</TableCell>
                       <TableCell>{customer.company}</TableCell>
+                      <TableCell>{customer.location}</TableCell>
                       <TableCell>
                         <div className="flex gap-2">
-                          {customer.tags.map((tag, index) => (
-                            <Badge
-                              key={`${tag}-${index}`}
-                              variant="outlined"
-                              className="bg-blue-100 text-blue-700 px-2 py-1 rounded-md"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
+                          {Array.isArray(customer.tags) &&
+                            customer.tags.map((tag, index) => (
+                              <Badge
+                                key={`${tag}-${index}`}
+                                variant="outlined"
+                                className="bg-blue-100 text-blue-700 px-2 py-1 rounded-md"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
                         </div>
                       </TableCell>
                     </TableRow>

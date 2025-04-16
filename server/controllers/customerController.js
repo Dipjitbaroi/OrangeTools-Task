@@ -88,10 +88,10 @@ export const getCustomerById = async (req, res) => {
 };
 
 export const createCustomer = async (req, res) => {
-  const { name, email, phone, company, tags } = req.body;
+  const { name, email, phone, company, tags, location } = req.body;
   const { userId } = req.user;
 
-  if (!name || !email || !phone || !company || !userId) {
+  if (!name || !email || !phone || !company || !location || !userId) {
     return res
       .status(400)
       .json({ error: "Name, email, phone, company, and userId are required" });
@@ -122,6 +122,7 @@ export const createCustomer = async (req, res) => {
         email,
         phone,
         company,
+        location,
         tags: processedTags,
         user: {
           connect: { id: userId },
@@ -141,9 +142,9 @@ export const createCustomer = async (req, res) => {
 
 export const updateCustomer = async (req, res) => {
   const { id } = req.params;
-  const { name, email, phone, company, tags } = req.body;
+  const { name, email, phone, company,location, tags } = req.body;
 
-  if (!name || !email || !phone || !company) {
+  if (!name || !email || !phone || !company || !location) {
     return res
       .status(400)
       .json({ error: "Name, email, phone, and company are required" });
@@ -175,6 +176,7 @@ export const updateCustomer = async (req, res) => {
         email,
         phone,
         company,
+        location,
         tags: processedTags,
       },
     });

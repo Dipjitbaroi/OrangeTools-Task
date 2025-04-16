@@ -20,8 +20,8 @@ async function processRow(row, userId) {
     const email = row[1]?.trim();
     const phone = row[2]?.trim();
     const company = row[3]?.trim();
-    const location = row[3]?.trim();
-    const tags = row[4] ? row[4].split(',').map(tag => tag.trim()) : [];
+    const location = row[4]?.trim();
+    const tags = row[5] ? row[5].split(',').map(tag => tag.trim()) : [];
 
     if (!name || !email || !phone || !company || !location) {
         skippingReason = 'Missing required fields (name, email, phone, company, location)';
