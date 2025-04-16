@@ -16,7 +16,7 @@ services:
       - app_network
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    command: ["sh", "/wait-for.sh"]
+    command: ["nginx", "-g", "daemon off;"]
 
   server:
     build:
@@ -26,6 +26,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+      - PORT=3000
       - JWT_SECRET=Vxk#92R!d7E^nM4yPlW9g!8f*Ko@1HnB
       - DATABASE_URL=postgresql://orangetool_task_user:sGX26XKf624WHZpA7wSUDujInnNwEq0R@dpg-cvugps9r0fns73833fug-a.oregon-postgres.render.com/orangetool_task
     networks:
@@ -47,4 +48,4 @@ services:
       - ./client:/app
     environment:
       - NODE_ENV=development
-      - VITE_API_URL=http://server:3000
+      - VITE_API_URL=http://localhost/api

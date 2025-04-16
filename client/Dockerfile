@@ -1,7 +1,18 @@
-FROM node:22-alpine AS builder
-WORKDIR /app
+FROM node:22
+
+WORKDIR /client/app
+
+# Install dependencies
 COPY package*.json ./
-RUN npm install 
+RUN npm install
+
+# Copy the rest of the source code
 COPY . .
+
 EXPOSE 5173
-RUN ["npm", "run", "build"]
+
+# # Build the client app (make sure your build script is defined in package.json)
+RUN npm run build
+
+# Command to run the client app (if applicable for production)
+CMD ["sh", "-c", "npm run dev -- --host"]

@@ -9,12 +9,12 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "http://localhost:80"],
   })
 );
 app.use(express.json());
@@ -35,9 +35,9 @@ async function testPrismaConnection() {
 testPrismaConnection();
 
 // Routes
-app.use("/auth", authRoutes);
-app.use("/customers", customerRoutes);
-app.use("/upload", uploadRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/customers", customerRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // Error handling middleware
 app.use((err, res) => {

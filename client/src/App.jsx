@@ -20,7 +20,7 @@ const App = () => {
           {/* Redirect to appropriate page based on authentication */}
           <Route
             path="/"
-            element={isAuthenticated() ? <Navigate to="/home" /> : <Navigate to="/login" />}
+            element={isAuthenticated() ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
           />
 
           {/* Public routes for Login and Register */}
