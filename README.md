@@ -205,14 +205,14 @@ The CSV file should adhere to the following format:
 ### Sample CSV File
 
 ```csv
-name,email,phone,company,tags
-John Doe,john.doe@example.com,1234567890,Doe Enterprises,"lead,prospect"
-Jane Smith,jane.smith@example.com,9876543210,Smith & Co,prospect
-Robert Jones,robert.jones@example.com,5551234567,Jones Inc,"lead,client"
-Mary Brown,mary.brown@example.com,2223334444,Brown Ltd,prospect
-Michael Davis,michael.davis@example.com,7778889999,Davis Group,client
-Jennifer Wilson,jennifer.wilson@example.com,4445556666,Wilson Corp,lead
-David Garcia,david.garcia@example.com,3332221111,Garcia LLC,prospect
-Linda Rodriguez,linda.rodriguez@example.com,8887776666,Rodriguez Co,client
-Christopher Williams,christopher.williams@example.com,6665554444,Williams & Sons,"prospect,client"
-Angela Garcia,angela.garcia@example.com,4443332222,Garcia Bros,lead
+name,email,phone,company,location,tags
+John Doe,john.doe@example.com,1234567890,Doe Enterprises,Dhaka,"lead,prospect"
+Jane Smith,jane.smith@example.com,9876543210,Smith & Co,Dhaka,prospect
+Robert Jones,robert.jones@example.com,5551234567,Jones Inc,Dhaka,"lead,client"
+Mary Brown,mary.brown@example.com,2223334444,Brown Ltd,Dhaka,prospect
+Michael Davis,michael.davis@example.com,7778889999,Davis Group,Dhaka,client
+Jennifer Wilson,jennifer.wilson@example.com,4445556666,Wilson Corp,Dhaka,lead
+David Garcia,david.garcia@example.com,3332221111,Garcia LLC,Dhaka,prospect
+Linda Rodriguez,linda.rodriguez@example.com,8887776666,Rodriguez Co,Dhaka,client
+Christopher Williams,christopher.williams@example.com,6665554444,Williams & Sons,Dhaka,"prospect,client"
+Angela Garcia,angela.garcia@example.com,4443332222,Garcia Bros,Dhaka,lead
