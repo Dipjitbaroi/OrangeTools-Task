@@ -8,7 +8,6 @@ import {
   LinearProgress,
 } from "@mui/material";
 import {
-  CloudUploadOutlined,
   InsertDriveFile,
   ErrorOutline,
   CheckCircleOutline,
@@ -34,8 +33,7 @@ const Docs = () => {
         return;
       }
 
-      // Reset file input to allow reattaching the same file
-      event.target.value = "";
+      event.target.value = ""; // Reset file input
 
       setFile(selectedFile);
       setMessage("");
@@ -50,7 +48,7 @@ const Docs = () => {
 
     try {
       const response = await uploadCSV(file).unwrap();
-      setResponseData(response);
+      setResponseData(response.summary);
       setMessage(response.message || "File uploaded successfully!");
     } catch (error) {
       setMessage(error.data?.message || "An error occurred during upload.");
@@ -134,7 +132,6 @@ const Docs = () => {
               </div>
             )}
 
-            {/* Upload Summary Section */}
             {responseData && (
               <div
                 style={{
@@ -148,11 +145,13 @@ const Docs = () => {
                   Total Processed: {responseData.totalProcessed}
                 </Typography>
                 <Typography>
-                  Success Count: {responseData.successCount}
+                  Total Skipped: {responseData.totalSkipped}
                 </Typography>
-                <Typography>Skipped Rows: {responseData.skipped}</Typography>
+                <Typography>
+                  Total Failed: {responseData.totalFailed}
+                </Typography>
 
-                {responseData.skippingReasons?.length > 0 && (
+                {responseData.errorSummary && (
                   <div
                     style={{
                       padding: 8,
@@ -168,20 +167,27 @@ const Docs = () => {
                       alignItems="center"
                       gap={1}
                     >
-                      <ErrorOutline />
-                      Skipping Reasons:
+                      <ErrorOutline /> Skipping Reasons:
                     </Typography>
                     <ul style={{ marginLeft: 16 }}>
-                      {responseData.skippingReasons.map((reason, index) => {
-                        const reasonKey = Object.keys(reason)[0];
-                        return (
-                          <li key={index}>
-                            <Typography>
-                              {reasonKey}: {reason[reasonKey]}
-                            </Typography>
-                          </li>
-                        );
-                      })}
+                      <li>
+                        <Typography>
+                          Validation Errors:{" "}
+                          {responseData.errorSummary.validation}
+                        </Typography>
+                      </li>
+                      <li>
+                        <Typography>
+                          Duplicate Entries:{" "}
+                          {responseData.errorSummary.duplicates}
+                        </Typography>
+                      </li>
+                      <li>
+                        <Typography>
+                          Processing Failures:{" "}
+                          {responseData.errorSummary.failed}
+                        </Typography>
+                      </li>
                     </ul>
                   </div>
                 )}
@@ -190,11 +196,14 @@ const Docs = () => {
           </CardContent>
         </Card>
       </div>
-
       {/* Description Section */}
       <div>
         <CardHeader title="📌 Description" />
         <CardContent>
+          <Typography variant="body1" gutterBottom>
+            The file uploading time should be 2-5 min for 1 million depending on
+            the system configuration
+          </Typography>
           <Typography variant="body1" gutterBottom>
             The following are common reasons why some rows were skipped during
             the upload process:
@@ -202,21 +211,26 @@ const Docs = () => {
           <ul style={{ paddingLeft: 16, listStyleType: "disc" }}>
             <li>
               <Typography variant="body2">
-                <strong>❌ Invalid Email Format:</strong> The email address in
-                the row is not in a valid format. Ensure all email addresses
-                follow the correct format.
+                <strong>❌ Validation Errors:</strong> Some rows have invalid
+                data formats that failed validation checks.
               </Typography>
             </li>
             <li>
               <Typography variant="body2">
-                <strong>🔁 Duplicate Email:</strong> The email address already
-                exists in the system. Make sure all emails are unique.
+                <strong>🔁 Duplicate Entries:</strong> The data in these rows
+                already exists in the system, causing duplication.
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body2">
+                <strong>⚠️ Processing Failures:</strong> Unexpected system
+                errors prevented these rows from being processed.
               </Typography>
             </li>
           </ul>
           <Typography variant="body1" style={{ marginTop: 12 }}>
-            ✅ <strong>Tip:</strong> To prevent these issues, review your CSV
-            file and correct any errors before uploading.
+            ✅ <strong>Tip:</strong> To reduce errors, check your CSV file for
+            formatting issues and duplicates before uploading.
           </Typography>
         </CardContent>
       </div>

@@ -1,11 +1,9 @@
 import express from "express";
-import { uploadCSV } from "../controllers/uploadController.js";
-import multer from "multer";
+import { upload, uploadCustomers } from "../controllers/uploadController.js";
 import { checkToken } from "../middlewares/checkToken.js";
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() }); // Store file in memory
 
-router.post("/csv", upload.single("file"), checkToken, uploadCSV);
+router.post("/csv", checkToken, upload.single("file"), uploadCustomers);
 
 export default router;
