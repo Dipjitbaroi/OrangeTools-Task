@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   app_network:
 
@@ -28,11 +26,14 @@ services:
       - NODE_ENV=development
       - PORT=3000
       - JWT_SECRET=Vxk#92R!d7E^nM4yPlW9g!8f*Ko@1HnB
-      - DATABASE_URL=postgresql://orangetool_task_user:sGX26XKf624WHZpA7wSUDujInnNwEq0R@dpg-cvugps9r0fns73833fug-a.oregon-postgres.render.com/orangetool_task
+      - DATABASE_URL=postgres://user:password@db:5432/orangetool_task
     networks:
       - app_network
     volumes:
       - ./server:/app
+    depends_on:
+      db:
+        condition: service_healthy
 
   client:
     build:
@@ -49,3 +50,22 @@ services:
     environment:
       - NODE_ENV=development
       - VITE_API_URL=http://localhost/api
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orangetool_task
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d orangetool_task"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
